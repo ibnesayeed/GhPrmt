@@ -1,1 +1,3 @@
 # ghprmt
+
+A test indeed!
