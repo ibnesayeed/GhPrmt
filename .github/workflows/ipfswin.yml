@@ -1,4 +1,4 @@
-name: Test IPFS on Windows
+name: Test IPFS on Windows and Linux
 
 on: push
 
