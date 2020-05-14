@@ -17,7 +17,7 @@ jobs:
           while ! curl -s localhost:5001 > /dev/null; do sleep 1; done
           echo The daemon is up indeed
           ipfs cat QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
-          echo All Done 2
+          echo All Done 3
   test-lin:
     runs-on: ubuntu-latest
     steps:
@@ -32,4 +32,4 @@ jobs:
           while ! curl -s localhost:5001 > /dev/null; do sleep 1; done
           echo The daemon is up indeed
           ipfs cat QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
-          echo All Done 2
+          echo All Done 3
