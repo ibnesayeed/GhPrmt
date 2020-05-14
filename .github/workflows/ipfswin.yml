@@ -3,8 +3,23 @@ name: Test IPFS on Windows
 on: push
 
 jobs:
-  test:
+  test-win:
     runs-on: windows-latest
+    steps:
+      - name: IPFS Setup Action
+        uses: ibnesayeed/setup-ipfs@test
+      - name: Boot IPFS Daemon
+        shell: bash
+        run: |
+          echo About to boot the daemon
+          ipfs daemon &
+          echo Checking if the daemon is up
+          while ! curl -s localhost:5001 > /dev/null; do sleep 1; done
+          echo The daemon is up indeed
+          ipfs cat QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
+          echo All Done
+  test-lin:
+    runs-on: ubuntu-latest
     steps:
       - name: IPFS Setup Action
         uses: ibnesayeed/setup-ipfs@test
