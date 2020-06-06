@@ -7,14 +7,9 @@ on:
 
 jobs:
   comment-run:
-    # if: contains(github.event.issue_comment.comment.body, '@github-actions run')
+    if: contains(github.event.comment.body, '@github-actions run')
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Name - ${{ github.event_name }}"
-    - run: echo "IC Action - ${{ github.event.issue_comment.action }}"
-    - run: echo "E Action - ${{ github.event.action }}"
-    - run: echo "Body - ${{ github.event.comment.body }}"
-    - run: cat "$GITHUB_EVENT_PATH" | jq -M .
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
