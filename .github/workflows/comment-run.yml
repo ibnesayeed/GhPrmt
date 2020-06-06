@@ -13,6 +13,7 @@ jobs:
     - run: echo "Name - ${{ github.event_name }}"
     - run: echo "IC Action - ${{ github.event.issue_comment.action }}"
     - run: echo "E Action - ${{ github.event.action }}"
+    - run: echo "Body - ${{ github.event.comment.body }}"
     - run: cat "$GITHUB_EVENT_PATH" | jq -M .
     - uses: actions/checkout@master
       with:
