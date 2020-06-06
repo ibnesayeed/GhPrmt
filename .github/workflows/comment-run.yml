@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
-    - uses: nwtgck/actions-comment-run@master
+    - uses: ibnesayeed/actions-comment-run@cmnt-file
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         allowed-associations: '["OWNER"]'
