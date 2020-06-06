@@ -10,7 +10,7 @@ jobs:
     # if: contains(github.event.issue_comment.comment.body, '@github-actions run')
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Hello ${{ github.event.issue_comment.comment.body }} there"
+    - run: echo "Hello ${{ github.event.issue_comment }} there"
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
