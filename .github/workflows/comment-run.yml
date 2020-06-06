@@ -10,6 +10,9 @@ jobs:
     # if: contains(github.event.issue_comment.comment.body, '@github-actions run')
     runs-on: ubuntu-latest
     steps:
+    - run: echo "Name: ${{ github.event_name }}"
+    - run: echo "IC Action: ${{ github.event.issue_comment.action }}"
+    - run: echo "E Action: ${{ github.event.action }}"
     - run: cat "$GITHUB_EVENT_PATH" | jq -M .
     - uses: actions/checkout@master
       with:
