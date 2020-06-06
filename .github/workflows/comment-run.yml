@@ -7,9 +7,10 @@ on:
 
 jobs:
   comment-run:
-    if: contains(github.event.issue_comment.comment.body, '@github-actions run')
+    # if: contains(github.event.issue_comment.comment.body, '@github-actions run')
     runs-on: ubuntu-latest
     steps:
+    - run: echo "::debug::Set ${{ github.event.issue_comment.comment.body }}"
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
