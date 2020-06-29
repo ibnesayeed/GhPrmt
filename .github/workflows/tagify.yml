@@ -1,0 +1,15 @@
+name: Tagify
+
+on:
+  - push
+
+jobs:
+  tagify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - run: |
+          imgtags=$(echo "${{ github.ref }}" | sed 's/refs\/tags\//latest,/; s/refs\/heads\///')
+          echo "::set-env name=imgtags::$imgtags"
+      - run: |
+          echo "TAGS: $imgtags"
