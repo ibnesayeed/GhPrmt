@@ -11,6 +11,6 @@ jobs:
       - id: imgtagger
         run: |
           imgtags=$(echo "${{ github.ref }}" | sed 's/refs\/tags\//latest,/; s/refs\/heads\///')
-          echo "::set-output name=commits::$imgtags"
+          echo "::set-output name=imgtags::$imgtags"
       - run: |
-          echo "TAGS: $${{ steps.imgtagger.outputs.imgtags }}"
+          echo "TAGS: ${{ steps.imgtagger.outputs.imgtags }}"
