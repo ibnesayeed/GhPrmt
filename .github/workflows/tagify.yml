@@ -12,4 +12,4 @@ jobs:
           imgtags=$(echo "${{ github.ref }}" | sed 's/refs\/tags\//latest,/; s/refs\/heads\///')
           echo "::set-env name=imgtags::$imgtags"
       - run: |
-          echo "TAGS: $imgtags"
+          echo "TAGS: $${{ imgtags }}"
