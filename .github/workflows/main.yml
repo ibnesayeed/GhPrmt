@@ -1,0 +1,23 @@
+name: Manual
+
+on: 
+  workflow_dispatch:
+    inputs:
+      color:
+        description: A random color name
+        required: true
+        default: blue
+
+jobs:
+  releaser:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a multi-line script
+      run: |
+        DT=`date -u +0.%Y.%m.%d.%H%M`
+        echo "$DT" >> README.md
+        git commit -am "Time bump: $DT ${{ github.event.inputs.color }}"
+        git push
+        git tag "$DT"
+        git push origin "$DT"
