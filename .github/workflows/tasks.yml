@@ -12,7 +12,18 @@ jobs:
             const filterLabel = '2020 tasks'
             const progressIssueID = 5
 
-            let report = Date()
+            const parseTasks = text => {
+              const tasks = []
+              text.split('\n').forEach(line => {
+                if (/^(\s{2,})?([*+-]|\d+\.)\s+\[ \]\s+\S+/.test(line)) {
+                  tasks.push('☐')
+                }
+                if (/^(\s{2,})?([*+-]|\d+\.)\s+\[[xX]\]\s+\S+/.test(line)) {
+                  tasks.push('☑')
+                }
+              })
+              return tasks
+            }
 
             const taskIssues = await github.paginate(github.issues.listForRepo, {
               owner: context.repo.owner,
@@ -20,8 +31,14 @@ jobs:
               labels: filterLabel
             })
 
+            let report = ''
             for (const issue of taskIssues) {
-              core.info(Object.keys(issue))
+              tasksStatus = parseTasks(issue.body)
+              if(!report) {
+                report = `Progress | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
+                report += `:--------|: ${tasksStatus.map(() => '-').join(':|:')}:\n`
+              }
+              report += `[${issue.title}](${issue.html_url}) | ${tasksStatus.join(' | ')}\n`
             }
 
             const progressIssue = await github.issues.get({
