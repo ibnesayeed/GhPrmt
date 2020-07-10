@@ -14,6 +14,16 @@ jobs:
 
             let report = Date()
 
+            const taskIssues = await github.paginate(github.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: filterLabel
+            })
+
+            for (const issue of taskIssues) {
+              core.info(Object.keys(issue))
+            }
+
             const progressIssue = await github.issues.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
