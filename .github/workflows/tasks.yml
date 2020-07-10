@@ -52,8 +52,7 @@ jobs:
               const team = {}
               text.split('\n').forEach(line => {
                 core.info(`OUTSIDE: ${line}`)
-                core.info(`OUTSIDE: ${/\|\s*\[Sheet\]\[~results-sheet\]\s*\|$/.test(line)}`)
-                if (/\|\s*\[Sheet\]\[~results-sheet\]\s*\|$/.test(line)) {
+                if (/\|\s*\[Sheet\]\[~results-sheet\]\s*\|/.test(line)) {
                   core.info(`INSIDE: ${line}`)
                   const [, authors, reviewers, analysts] = line.split('|')
                   team.authors = [...authors.matchAll(/@(?<username>\w+)/g)].map(u => u.groups.username)
