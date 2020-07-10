@@ -87,7 +87,10 @@ jobs:
               const links = parseLinks(issue.body)
               const linkify = formatLinks(links)
               const team = parseTeam(issue.body)
+              core.info(Object.keys(team).length)
               const teamify = formatTeam(team)
+              core.info(teamify)
+
               if(!report) {
                 report = `Chapters | Links | Team | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
                 report += `:--------|:------|:----:|:${tasksStatus.map(() => '-').join(':|:')}:\n`
