@@ -12,7 +12,7 @@ on:
 
 jobs:
   track-progress:
-    name: Track Progress to ${{ TRACKER_ISSUE_NUMBER }}
+    name: Track Progress
     if: github.repository == 'HTTPArchive/almanac.httparchive.org'
     runs-on: ubuntu-latest
     steps:
