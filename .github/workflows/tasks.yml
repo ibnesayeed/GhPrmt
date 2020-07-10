@@ -1,6 +1,7 @@
 name: Task Progress
 
 on:
+  workflow_dispatch:
   issues:
     types:
       - edited
@@ -31,6 +32,7 @@ jobs:
             const taskIssues = await github.paginate(github.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
+              direction: 'asc',
               labels: filterLabel
             })
 
@@ -56,5 +58,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: progressIssueID,
-              body: progressIssue.data.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}\n<!-- REPORT END -->`)
+              body: progressIssue.data.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}<!-- REPORT END -->`)
             })
