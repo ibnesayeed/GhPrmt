@@ -14,8 +14,8 @@ jobs:
         with:
           script: |
             // Update the following two constants each year
-            const FILTER_LABEL = '2020 chapter'
-            const TRACKER_ISSUE_ID = 989
+            const FILTER_LABEL = '2020 tasks'
+            const TRACKER_ISSUE_ID = 5
 
             const parseTasks = text => {
               const tasks = []
