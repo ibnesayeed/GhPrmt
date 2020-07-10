@@ -1,6 +1,9 @@
 name: Task Progress
 
-on: workflow_dispatch
+on:
+  issues:
+    types:
+      - edited
 
 jobs:
   progress:
