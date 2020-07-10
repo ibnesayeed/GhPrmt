@@ -1,0 +1,28 @@
+name: Task Progress
+
+on: workflow_dispatch
+
+jobs:
+  progress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v2
+        with:
+          script: |
+            const filterLabel = '2020 tasks'
+            const progressIssueID = 5
+
+            let report = Date()
+
+            const progressIssue = github.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: progressIssueID
+            })
+
+            github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: progressIssueID,
+              body: progressIssue.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}\n<!-- REPORT END -->`)
+            })
