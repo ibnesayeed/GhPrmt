@@ -1,4 +1,4 @@
-name: Task Progress
+name: Progress Tracker
 
 on:
   workflow_dispatch:
@@ -7,20 +7,21 @@ on:
       - edited
 
 jobs:
-  progress:
+  track-progress:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v2
         with:
           script: |
-            const filterLabel = '2020 tasks'
-            const progressIssueID = 5
+            // Update the following two constants each year
+            const FILTER_LABEL = '2020 chapter'
+            const TRACKER_ISSUE_ID = 989
 
             const parseTasks = text => {
               const tasks = []
               text.split('\n').forEach(line => {
                 if (/^(\s{2,})?([*+-]|\d+\.)\s+\[ \]\s+\S+/.test(line)) {
-                  tasks.push(' ')
+                  tasks.push('')
                 }
                 if (/^(\s{2,})?([*+-]|\d+\.)\s+\[[xX]\]\s+\S+/.test(line)) {
                   tasks.push('☑')
@@ -29,34 +30,51 @@ jobs:
               return tasks
             }
 
+            const parseLinks = text => {
+              const links = {}
+              text.split('\n').forEach(line => {
+                const linkMap = {
+                  draft: /^\[~draft-doc\]:\s*(?<link>\S+)/,
+                  sql: /^\[~sql-dir\]:\s*(?<link>\S+)/,
+                  results: /^\[~results-sheet\]:\s*(?<link>\S+)/
+                }
+                for (const [k, v] of Object.entries(linkMap)) {
+                  const m = line.match(v)
+                  if (m) {
+                    links[k] = m.groups.link
+                  }
+                }
+              })
+              return links
+            }
+
             const taskIssues = await github.paginate(github.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
               direction: 'asc',
-              labels: filterLabel
+              labels: FILTER_LABEL
             })
 
             let report = ''
             for (const issue of taskIssues) {
-              tasksStatus = parseTasks(issue.body)
+              const tasksStatus = parseTasks(issue.body)
+              const links = parseLinks(issue.body)
               if(!report) {
                 report = `Milestones | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
                 report += `:----------|:${tasksStatus.map(() => '-').join(':|:')}:\n`
               }
-              report += `[${issue.title.replace(/\s+\d+$/, '')}](${issue.html_url}) | ${tasksStatus.join(' | ')}\n`
+              report += `[${issue.title.replace(/\s+\d+$/, '')}](${issue.html_url}) ${links.draft && links.draft != '#' ? `[🗎](${links.draft})` : ''} | ${tasksStatus.join(' | ')}\n`
             }
 
             const progressIssue = await github.issues.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: progressIssueID
+              issue_number: TRACKER_ISSUE_ID
             })
-
-            core.info(Object.keys(progressIssue.data))
 
             github.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: progressIssueID,
+              issue_number: TRACKER_ISSUE_ID,
               body: progressIssue.data.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}<!-- REPORT END -->`)
             })
