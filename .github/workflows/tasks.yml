@@ -20,11 +20,11 @@ jobs:
               issue_number: progressIssueID
             })
 
-            core.info(Object.keys(progressIssue))
+            core.info(Object.keys(progressIssue.data))
 
             github.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: progressIssueID,
-              body: progressIssue.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}\n<!-- REPORT END -->`)
+              body: progressIssue.data.body.replace(/<!-- REPORT START -->[\s\S]*<!-- REPORT END -->/, `<!-- REPORT START -->\n${report}\n<!-- REPORT END -->`)
             })
