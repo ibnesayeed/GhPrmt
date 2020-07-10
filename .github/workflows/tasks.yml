@@ -14,11 +14,13 @@ jobs:
 
             let report = Date()
 
-            const progressIssue = github.issues.get({
+            const progressIssue = await github.issues.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: progressIssueID
             })
+
+            core.info(progressIssue)
 
             github.issues.update({
               owner: context.repo.owner,
