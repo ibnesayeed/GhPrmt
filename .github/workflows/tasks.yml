@@ -20,7 +20,7 @@ jobs:
               issue_number: progressIssueID
             })
 
-            core.info(Object.keys(myObjectprogressIssue))
+            core.info(Object.keys(progressIssue))
 
             github.issues.update({
               owner: context.repo.owner,
