@@ -1,21 +1,26 @@
 name: Progress Tracker
 
+env:
+  # Update these environment variables every year
+  FILTER_LABEL: '2020 tasks'
+  TRACKER_ISSUE_ID: 5
+
 on:
   workflow_dispatch:
-  issues:
-    types:
-      - edited
+  schedule:
+    - cron: '0 6,18 * * *'
 
 jobs:
   track-progress:
+    name: Track Progress
+    if: github.repository == 'HTTPArchive/almanac.httparchive.org'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v2
         with:
           script: |
-            // Update the following two constants each year
-            const FILTER_LABEL = '2020 tasks'
-            const TRACKER_ISSUE_ID = 5
+            const FILTER_LABEL = process.env.FILTER_LABEL
+            const TRACKER_ISSUE_ID = process.env.TRACKER_ISSUE_ID
 
             const parseTasks = text => {
               const tasks = []
@@ -51,9 +56,7 @@ jobs:
             const parseTeam = text => {
               const team = {}
               text.split('\n').forEach(line => {
-                core.info(`OUTSIDE: ${line}`)
                 if (/\|\s*\[Sheet\]\[~results-sheet\]\s*\|/.test(line)) {
-                  core.info(`INSIDE: ${line}`)
                   const [, authors, reviewers, analysts] = line.split('|')
                   team.authors = [...authors.matchAll(/@(?<username>\w+)/g)].map(u => u.groups.username)
                   team.reviewers = [...reviewers.matchAll(/@(?<username>\w+)/g)].map(u => u.groups.username)
@@ -69,7 +72,7 @@ jobs:
                 sql: '⛁',
                 results: '⚝'
               }
-              return Object.entries(links).filter(l => l[1] && l[1] != '#').map(l => `[${icons[l[0]] || l[0]}](${l[1]})`).join(' • ')
+              return Object.entries(links).filter(l => l[1] && l[1] != '#').map(l => `[${icons[l[0]] || l[0]}](${l[1]})`).join(' ')
             }
 
             const formatTeam = team => {
@@ -84,20 +87,20 @@ jobs:
             })
 
             let report = ''
+            let taskCount = 0
             for (const issue of taskIssues) {
               const tasksStatus = parseTasks(issue.body)
-              const links = parseLinks(issue.body)
-              const linkify = formatLinks(links)
-              const team = parseTeam(issue.body)
-              core.info(Object.keys(team).length)
-              const teamify = formatTeam(team)
-              core.info(teamify)
-
               if(!report) {
+                taskCount = tasksStatus.length
                 report = `Chapters | Links | Team | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
                 report += `:--------|:------|:----:|:${tasksStatus.map(() => '-').join(':|:')}:\n`
               }
-              report += `[${issue.title.replace(/\s+\d+$/, '')}](${issue.html_url}) | ${linkify} | ${teamify} | ${tasksStatus.join(' | ')}\n`
+              if(!tasksStatus.length || tasksStatus.length != taskCount) {
+                continue
+              }
+              const links = formatLinks(parseLinks(issue.body))
+              const team = formatTeam(parseTeam(issue.body))
+              report += `[${issue.title.replace(/\s+\d+$/, '')}](${issue.html_url}) | ${links} | ${team} | ${tasksStatus.join(' | ')}\n`
             }
 
             const progressIssue = await github.issues.get({
