@@ -35,10 +35,10 @@ jobs:
             for (const issue of taskIssues) {
               tasksStatus = parseTasks(issue.body)
               if(!report) {
-                report = `Progress | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
-                report += `:--------|: ${tasksStatus.map(() => '-').join(':|:')}:\n`
+                report = `Milestones | ${tasksStatus.map((v, i) => i + 1).join(' | ')}\n`
+                report += `:----------|:${tasksStatus.map(() => '-').join(':|:')}:\n`
               }
-              report += `[${issue.title}](${issue.html_url}) | ${tasksStatus.join(' | ')}\n`
+              report += `[${issue.title.replace(/\s+\d+$/, '')}](${issue.html_url}) | ${tasksStatus.join(' | ')}\n`
             }
 
             const progressIssue = await github.issues.get({
