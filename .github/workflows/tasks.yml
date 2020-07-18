@@ -71,7 +71,6 @@ jobs:
             core.info(`Tracking progress of ${totalTrackedTasks} tasks across chapters`)
 
             const calcStats = nums => {
-              core.info(JSON.stringify(nums))
               if (!nums.length) {
                 return [0, 0, 0, 0, 0]
               }
@@ -180,11 +179,9 @@ jobs:
               return
             }
 
-            core.info(JSON.stringify(chapters))
-
             const teamStats = {}
             Object.keys(teamMembers).forEach(t => {
-              teamStats[t] = calcStats(chapters.map(c => c.team[t].length))
+              teamStats[t] = calcStats(chapters.map(c => (c.team[t] || []).length))
             })
 
             chapters.sort((a, b) => a.number.localeCompare(b.number, undefined, {numeric: true}))
