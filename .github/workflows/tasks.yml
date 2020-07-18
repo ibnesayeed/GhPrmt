@@ -4,7 +4,7 @@ env:
   # Update these environment variables every year
   FILTER_LABEL: '2020 tasks'
   TRACKER_ISSUE_NUMBER: 5
-  TOTAL_TRACKED_TASKS: 30
+  TOTAL_TRACKED_TASKS: 3
   SQL_BASE_DIR: 'https://github.com/HTTPArchive/almanac.httparchive.org/tree/main/sql/2020/'
 
 on:
