@@ -185,6 +185,8 @@ jobs:
             })
 
             chapters.sort((a, b) => a.number.localeCompare(b.number, undefined, {numeric: true}))
+            
+            core.info(JSON.stringify(chapters))
 
             chapters.forEach(c => {
               Object.entries(c.team).forEach(([k, v]) => {
