@@ -80,8 +80,8 @@ jobs:
                 nums.reduce((a,b) => a + b, 0),
                 Math.min(...nums),
                 Math.max(...nums),
-                nums.reduce((a,b) => a + b, 0) / nums.length,
-                nums.length % 2 ? nums[half] : (nums[half - 1] + nums[half]) / 2.0
+                (nums.reduce((a,b) => a + b, 0) / nums.length).toFixed(2),
+                (nums.length % 2 ? nums[half] : (nums[half - 1] + nums[half]) / 2.0).toFixed(2)
               ]
             }
 
@@ -201,7 +201,7 @@ jobs:
 
             const stats = [
               'Contributor Stats | Total | Min | Max | Mean | Median',
-              ':-----------------|------:|----:|----:|-----:|-------'
+              ':-----------------|------:|----:|----:|-----:|------:'
             ].concat(Object.entries(teamStats).map(([k, v]) => `${k} | ${v.join(' | ')}`)).join('\n')
 
             const teams = Object.entries(teamMembers).map(([k, v]) => {
