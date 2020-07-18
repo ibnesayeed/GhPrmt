@@ -180,14 +180,14 @@ jobs:
               return
             }
 
+            core.info(JSON.stringify(chapters))
+
             const teamStats = {}
             Object.keys(teamMembers).forEach(t => {
               teamStats[t] = calcStats(chapters.map(c => c.team[t].length))
             })
 
             chapters.sort((a, b) => a.number.localeCompare(b.number, undefined, {numeric: true}))
-            
-            core.info(JSON.stringify(chapters))
 
             chapters.forEach(c => {
               Object.entries(c.team).forEach(([k, v]) => {
