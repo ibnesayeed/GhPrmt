@@ -141,7 +141,7 @@ jobs:
             ].concat(chapters.map(formatRow)).join('\n')
 
             report += `\n\n**Links** = ${Object.entries(icons).map(([k, v]) => `${v} (${k})`).join(', ')}\n**Team** = Authors/Reviewers/Analysts`
-            report += `\n\n✨ This issue is automatically maintained by [progress-tracker.yml](https://github.com/foo/bar/blob/main/.github/workflows/progress-tracker.yml) ✨`
+            report += '\n\n✨ This issue is automatically maintained by [progress-tracker.yml](https://github.com/HTTPArchive/almanac.httparchive.org/blob/main/.github/workflows/progress-tracker.yml) ✨'
 
             const progressIssue = await github.issues.get({
               owner: context.repo.owner,
