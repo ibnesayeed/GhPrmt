@@ -71,6 +71,7 @@ jobs:
             core.info(`Tracking progress of ${totalTrackedTasks} tasks across chapters`)
 
             const calcStats = nums => {
+              core.info(JSON.stringify(nums))
               if (!nums.length) {
                 return [0, 0, 0, 0, 0]
               }
