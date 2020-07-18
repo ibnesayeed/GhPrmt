@@ -140,7 +140,7 @@ jobs:
               `:--------|:------|:----:${'|:-:'.repeat(totalTrackedTasks)}`
             ].concat(chapters.map(formatRow)).join('\n')
 
-            report += `\n\n**Links** = ${Object.entries(icons).map((k, v) => `${v} (${k})`).join(', ')}\n**Team** = Authors/Reviewers/Analysts`
+            report += `\n\n**Links** = ${Object.entries(icons).map(([k, v]) => `${v} (${k})`).join(', ')}\n**Team** = Authors/Reviewers/Analysts`
 
             const progressIssue = await github.issues.get({
               owner: context.repo.owner,
