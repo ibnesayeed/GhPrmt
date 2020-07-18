@@ -155,7 +155,7 @@ jobs:
             ].concat(chapters.map(formatRow)).join('\n')
 
             const teams = Object.entries(teamMembers).map(([k, v]) => {
-              return `**${k}**: ${Object.entries(v).map(([m, c]) => `<span title="Chapters: ${c.join(', ')}">@${m}</span>`)}`
+              return `**${k} (${Object.keys(v).length})**: ${Object.entries(v).map(([m, c]) => `<span title="Chapters: ${c.join(', ')}">@${m} (c.length)</span>`)}`
             }).join('\n\n')
 
             const progressIssue = await github.issues.get({
