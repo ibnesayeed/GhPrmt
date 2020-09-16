@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Default color ${{ github.event.inputs.color == 'blue' }}
+      run: echo "::set-env name=DEFAULT_COLOR::${{ github.event.inputs.color == 'blue' }}"
     - name: Run a multi-line script
       run: |
         git config user.email "github-action@users.noreply.github.com"
